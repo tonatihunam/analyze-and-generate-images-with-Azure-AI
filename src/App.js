@@ -1,7 +1,6 @@
 import React from 'react';
 import analyzeImage from './azure-image-analysis';
 import generateImage from './azure-image-generation';
-require('dotenv').config();
 
 function App() {
   //const [imageOrPrompt, setImageOrPrompt] = React.useState('https://moderatorsampleimages.blob.core.windows.net/samples/sample16.png');
@@ -11,7 +10,7 @@ function App() {
 
   const handleAnalyze = React.useCallback(() => {
     setIsLoading(true);
-    analyzeImage(imageOrPrompt, process.env.OCP_APIM_SUBSCRIPTION_KEY)
+    analyzeImage(imageOrPrompt, process.env.REACT_APP_OCP_APIM_SUBSCRIPTION_KEY)
       .then(data => {
         setResult(data);
         setIsLoading(false);
@@ -24,7 +23,7 @@ function App() {
 
   const handleGenerate = React.useCallback(() => {
     setIsLoading(true);
-    generateImage(process.env.OPENAI_API_KEY, imageOrPrompt, 'dall-e-2', 'url', 512, 512)
+    generateImage(process.env.REACT_APP_OPENAI_API_KEY, imageOrPrompt, 'dall-e-2', 'url', 512, 512)
       .then(data => {
         setResult(data);
         setIsLoading(false);
@@ -55,7 +54,8 @@ function App() {
     }
   }
   function isConfigured(){
-    return process.env.OCP_APIM_SUBSCRIPTION_KEY && process.env.OPENAI_API_KEY;
+    return process.env.REACT_APP_OCP_APIM_SUBSCRIPTION_KEY && process.env.REACT_APP_OPENAI_API_KEY;
+
   }
 
   return (
