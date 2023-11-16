@@ -1,0 +1,13 @@
+.prompt {
+    display: inline-flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+}
+
+.processing {
+    display: inline-flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+    color: white;
+    background-color: aquamarine;
+}
