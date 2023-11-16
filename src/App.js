@@ -1,15 +1,30 @@
 import React from 'react';
 import analyzeImage from './azure-image-analysis';
+import generateImage from './azure-image-generation';
 require('dotenv').config();
 
 function App() {
-  const [imageOrPrompt, setImageOrPrompt] = React.useState('https://moderatorsampleimages.blob.core.windows.net/samples/sample16.png');
+  //const [imageOrPrompt, setImageOrPrompt] = React.useState('https://moderatorsampleimages.blob.core.windows.net/samples/sample16.png');
+  const [imageOrPrompt, setImageOrPrompt] = React.useState('A puppy sitting on the grass');
   const [isLoading, setIsLoading] = React.useState(false);
   const [result, setResult] = React.useState(null);
 
-  const handleClick = React.useCallback(() => {
+  const handleAnalyze = React.useCallback(() => {
     setIsLoading(true);
-    analyzeImage(imageOrPrompt, process.env.OCP_APIM_SUBSCRIPTION_KEYz)
+    analyzeImage(imageOrPrompt, process.env.OCP_APIM_SUBSCRIPTION_KEY)
+      .then(data => {
+        setResult(data);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.log(error);
+        setIsLoading(false);
+      });
+  },[imageOrPrompt]);
+
+  const handleGenerate = React.useCallback(() => {
+    setIsLoading(true);
+    generateImage(process.env.OPENAI_API_KEY, imageOrPrompt, 'dall-e-2', 'url', 512, 512)
       .then(data => {
         setResult(data);
         setIsLoading(false);
@@ -33,8 +48,8 @@ function App() {
     } else {
       return (
         <>
-          <p>Generated image:</p>
-          <img src={result?.data?.url} alt="Generated" />
+          <h2>Image Generation</h2>
+          <img src={result} alt="Generated" />
         </>
       );
     }
@@ -55,7 +70,7 @@ function App() {
         />
       </div>
       <div className='controls'>
-        <button onClick={handleClick}>Analyze</button> <button onClick={handleClick}>Generate</button>
+        <button onClick={handleAnalyze}>Analyze</button> <button onClick={handleGenerate}>Generate</button>
       </div>
       {isLoading && <div className="processing">Processing...</div>}
       {result && DisplayResults(result)}
