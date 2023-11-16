@@ -44,3 +44,12 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_RED_FIELD_03B15640F }}
           action: "close"
+  set_environment_variables:
+    runs-on: ubuntu-latest
+    name: Set Environment Variables
+    steps:
+      - name: Set Environment Variables
+        env:
+          OCP_APIM_SUBSCRIPTION_KEY: ${{ secrets.OCP_APIM_SUBSCRIPTION_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
