@@ -49,6 +49,7 @@ jobs:
     name: Set Environment Variables
     steps:
       - name: Set Environment Variables
+        uses: Azure/static-web-apps-deploy@v1
         env:
           OCP_APIM_SUBSCRIPTION_KEY: ${{ secrets.OCP_APIM_SUBSCRIPTION_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
