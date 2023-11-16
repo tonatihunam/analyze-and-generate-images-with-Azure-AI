@@ -54,26 +54,36 @@ function App() {
       );
     }
   }
+  function isConfigured(){
+    return process.env.OCP_APIM_SUBSCRIPTION_KEY && process.env.OPENAI_API_KEY;
+  }
 
   return (
     <>
-      <h1>Computer vision</h1>
-      <div className='prompt'>
-        Insert URL or type prompt:
-        <input 
-          type="text" 
-          name="imageOrPrompt"
-          size="60"
-          value={imageOrPrompt}
-          onChange={(e) => setImageOrPrompt(e.target.value)}
-          placeholder="Enter URL to analyze or textual prompt to generate image"
-        />
-      </div>
-      <div className='controls'>
-        <button onClick={handleAnalyze}>Analyze</button> <button onClick={handleGenerate}>Generate</button>
-      </div>
-      {isLoading && <div className="processing">Processing...</div>}
-      {result && DisplayResults(result)}
+    {isConfigured() 
+      ? (
+        <>
+          <h1>Computer vision</h1>
+          <div className='prompt'>
+            Insert URL or type prompt:
+            <input 
+              type="text" 
+              name="imageOrPrompt"
+              size="60"
+              value={imageOrPrompt}
+              onChange={(e) => setImageOrPrompt(e.target.value)}
+              placeholder="Enter URL to analyze or textual prompt to generate image"
+            />
+          </div>
+          <div className='controls'>
+            <button onClick={handleAnalyze}>Analyze</button> <button onClick={handleGenerate}>Generate</button>
+          </div>
+          {isLoading && <div className="processing">Processing...</div>}
+          {result && DisplayResults(result)}
+        </>
+        )
+      : <div className="error">Key and/or endpoint not configured for cognitive services</div>
+    }
     </>
   );
 }
